@@ -33,3 +33,12 @@ exports.getStatusData = function (next) {
     });
   });
 }
+
+exports.popFrontOfQueue = function (next) {
+  client.lpop('queue', function (err, reply) {
+    if(err){
+      console.log('Error ' + err);
+    }
+    next(reply);
+  });
+}
