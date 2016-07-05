@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var connecter = require('../app/connecter.js');
 
+
 router.get('/new-data', function (req, res) {
   connecter.getNewData(function (data) {
     res.json({"new-data" : data});
@@ -31,7 +32,14 @@ router.get('/queue', function (req, res) {
 });
 
 router.post('/status', function (req, res) {
-
+  if(req.body.beans != undefined && req.body.water != undefined){
+    connecter.setStatusData(req.body.beans, req.body.water, function () {
+      res.sendStatus(201);
+    });
+  }
+  else{
+    res.sendStatus(406);
+  }
 });
 
 router.post('/finished', function (req, res) {
