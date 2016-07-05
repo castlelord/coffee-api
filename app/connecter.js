@@ -2,7 +2,7 @@ var redis = require('redis');
 
 var client = redis.createClient(process.env.PORT || 6379);
 
-client.on("error", function (err) {
+client.on('error', function (err) {
   console.log("Error " + err);
 });
 
@@ -12,7 +12,17 @@ exports.setNewData = function (newData, next) {
   }
   else {
     console.log(newData + ' is not a possible value');
+    next();
   }
+}
+
+exports.getNewData = function (next) {
+  client.get('new-data', function (err, reply) {
+    if (err){
+      console.log('Error ' + err);
+    }
+    next(reply);
+  });
 }
 
 exports.setStatusData = function (beans, water, next) {
@@ -24,12 +34,15 @@ exports.setStatusData = function (beans, water, next) {
 exports.getStatusData = function (next) {
   client.get('beans', function(err, reply){
     if(err){
-      console.log('Error 'err);
+      console.log('Error ' + err);
     }
     var data = {'beans' : reply};
     client.get('water', function (err, reply) {
+      if(err){
+        console.log('Error ' + err);
+      }
       data.water = reply;
-      return data;
+      next(data);
     });
   });
 }
@@ -43,10 +56,11 @@ exports.popFrontOfQueue = function (next) {
   });
 }
 
-exports.addToQueue = function (coffee) {
+exports.addToQueue = function (coffee, next) {
   client.rpush('queue', coffee, function (err) {
     if(err){
       console.log('Error ' + err);
     }
+    next();
   });
 }

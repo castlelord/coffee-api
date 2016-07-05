@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/new-data', function (req, res) {
-
+  
 });
 
 router.get('/queue', function (req, res) {
