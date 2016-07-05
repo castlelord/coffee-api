@@ -64,3 +64,12 @@ exports.addToQueue = function (coffee, next) {
     next();
   });
 }
+
+exports.getQueueLength = function (next) {
+  client.llen('queue', function (err, reply) {
+    if(err){
+      console.log('Error ' + err);
+    }
+    next(reply);
+  });
+}
