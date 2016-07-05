@@ -42,3 +42,11 @@ exports.popFrontOfQueue = function (next) {
     next(reply);
   });
 }
+
+exports.addToQueue = function (coffee) {
+  client.rpush('queue', coffee, function (err) {
+    if(err){
+      console.log('Error ' + err);
+    }
+  });
+}
