@@ -195,4 +195,27 @@ describe('Redis Connection Interface', function () {
       expect(value).to.equal('50');
     });
   });
+
+  describe('Function getQueueLength', function () {
+
+    var value = false;
+
+    before(function (done) {
+      connecter.getQueueLength(function (data) {
+        client.llen('queue', function (err, reply) {
+          if(err){
+            console.log('Test Error ' + err);
+          }
+          if(data == reply){
+            value = true;
+          }
+          done();
+        });
+      });
+    });
+
+    it('Gets the corect length', function () {
+      expect(value).to.equal(true);
+    });
+  });
 });
