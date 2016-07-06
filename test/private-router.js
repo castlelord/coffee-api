@@ -48,4 +48,39 @@ describe('Private API Router', function () {
       expect(value).to.deep.equal({"queue": ["4","3","5"]});
     });
   });
+
+  describe('POST /status', function () {
+
+    var status = false;
+    var value;
+
+    requestData = {
+      'url' : 'http://localhost:3000/private/status',
+      'method' : 'POST',
+      'json' : {'beans' : '99', 'water' : '1'}
+    };
+
+    before(function (done) {
+      request(requestData, function (err, response) {
+        if(err){
+          console.log('Test Error ' + err);
+        }
+        if(response.statusCode == 201){
+          status = true;
+        }
+        connecter.getStatusData(function (data) {
+          value = data;
+          done();
+        });
+      });
+    });
+
+    it('Sends right status code', function () {
+      expect(status).to.equal(true);
+    });
+
+    it('Stores the statuses correctly', function () {
+      expect(value).to.deep.equal(requestData.json);
+    });
+  });
 });
