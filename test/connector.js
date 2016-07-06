@@ -10,80 +10,75 @@ describe('Redis Connection Interface', function () {
 
     var value = [];
 
-    before(function(done){
-      connecter.setNewData('NONE', function () {
-        client.get('new-data', function (err, reply) {
-          if (err){
-            console.log('Test Error ' + err);
-          }
-          value[0] = reply;
-          done();
+    before(function (done) {
+
+      (function (){
+        connecter.setNewData('NONE', function () {
+          client.get('new-data', function (err, reply) {
+            if (err){
+              console.log('Test Error ' + err);
+            }
+            value[0] = reply;
+            (function (){
+              connecter.setNewData('COFFEE', function () {
+                client.get('new-data', function (err, reply) {
+                  if (err){
+                    console.log('Test Error ' + err);
+                  }
+                  value[1] = reply;
+                  (function (){
+                    connecter.setNewData('BOTH', function () {
+                      client.get('new-data', function (err, reply) {
+                        if (err){
+                          console.log('Test Error ' + err);
+                        }
+                        value[3] = reply;
+                        (function (){
+                          connecter.setNewData('STATUS', function () {
+                            client.get('new-data', function (err, reply) {
+                              if (err){
+                                console.log('Test Error ' + err);
+                              }
+                              value[2] = reply;
+                              (function (){
+                                connecter.setNewData('Not a valid keyword', function () {
+                                  client.get('new-data', function (err, reply) {
+                                    if (err){
+                                      console.log('Test Error ' + err);
+                                    }
+                                    value[4] = reply;
+                                    done();
+                                  });
+                                });
+                              }());
+                            });
+                          });
+                        }());
+                      });
+                    });
+                  }());
+                });
+              });
+            }());
+          });
         });
-      });
+      }());
     });
 
     it('Stores NONE as NONE', function () {
       expect(value[0]).to.equal('NONE');
     });
 
-    before(function(done){
-      connecter.setNewData('COFFEE', function () {
-        client.get('new-data', function (err, reply) {
-          if (err){
-            console.log('Test Error ' + err);
-          }
-          value[1] = reply;
-          done();
-        });
-      });
-    });
-
     it('Stores COFFEE as COFFEE', function () {
       expect(value[1]).to.equal('COFFEE');
-    });
-
-    before(function(done){
-      connecter.setNewData('STATUS', function () {
-        client.get('new-data', function (err, reply) {
-          if (err){
-            console.log('Test Error ' + err);
-          }
-          value[2] = reply;
-          done();
-        });
-      });
-    });
-
-    it('Stores STATUS as STATUS', function () {
-      expect(value[2]).to.equal('STATUS');
-    });
-
-    before(function(done){
-      connecter.setNewData('BOTH', function () {
-        client.get('new-data', function (err, reply) {
-          if (err){
-            console.log('Test Error ' + err);
-          }
-          value[3] = reply;
-          done();
-        });
-      });
     });
 
     it('Stores BOTH as BOTH', function () {
       expect(value[3]).to.equal('BOTH');
     });
 
-    before(function(done){
-      connecter.setNewData('Not a valid keyword', function () {
-        client.get('new-data', function (err, reply) {
-          if (err){
-            console.log('Test Error ' + err);
-          }
-          value[4] = reply;
-          done();
-        });
-      });
+    it('Stores STATUS as STATUS', function () {
+      expect(value[2]).to.equal('STATUS');
     });
 
     it('Stores only valid keywords', function () {
@@ -103,7 +98,7 @@ describe('Redis Connection Interface', function () {
     });
 
     it('Gets the right data', function () {
-      expect(value).to.equal('BOTH');
+      expect(value).to.equal('STATUS');
     });
   });
 

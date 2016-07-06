@@ -19,7 +19,7 @@ describe('Private API Router', function () {
     });
 
     it('Sends the right keyword', function () {
-      expect(value).to.deep.equal({"new-data": "BOTH"});
+      expect(value).to.deep.equal({"new-data": "STATUS"});
     });
   });
 

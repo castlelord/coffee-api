@@ -9,6 +9,39 @@ client.on('error', function (err) {
 exports.setNewData = function (newData, next) {
   if(newData === 'NONE' || newData === 'COFFEE' || newData === 'STATUS' || newData === 'BOTH'){
     client.set('new-data', newData, next);
+    /*client.get('new-data', function (err, reply) {
+      if (err){
+        console.log('Error ' + err);
+      }
+
+      switch (reply) {
+        case 'COFFEE':
+          if(newData == 'STATUS'){
+            console.log(1);
+            client.set('new-data', 'BOTH', next);
+          }
+          else {
+            console.log(2);
+            client.set('new-data', newData, next);
+          }
+          break;
+
+        case 'STATUS':
+          if(newData == 'COFFEE'){
+            console.log(3);
+            client.set('new-data', 'BOTH', next);
+          }
+          else {
+            console.log(4);
+            client.set('new-data', newData, next);
+          }
+          break;
+
+        default:
+          console.log(5);
+          client.set('new-data', newData, next);
+      }
+    });*/
   }
   else {
     console.log(newData + ' is not a possible value');
