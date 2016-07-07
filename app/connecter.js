@@ -9,6 +9,7 @@ client.on('error', function (err) {
 exports.setNewData = function (newData, next) {
   if(newData === 'NONE' || newData === 'COFFEE' || newData === 'STATUS' || newData === 'BOTH'){
     client.set('new-data', newData, next);
+     
   }
   else {
     console.log(newData + ' is not a possible value');
