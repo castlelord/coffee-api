@@ -32,12 +32,14 @@ describe('Private API Router', function () {
       connecter.addToQueue(4, function () {
         connecter.addToQueue(3, function () {
           connecter.addToQueue(5, function () {
-            request(url, function (err, response, body) {
-              if(err){
-                console.log('Test Error ' + err);
-              }
-              value = JSON.parse(body);
-              done();
+            connecter.setNewData('COFFEE', function () {
+              request(url, function (err, response, body) {
+                if(err){
+                  console.log('Test Error ' + err);
+                }
+                value = JSON.parse(body);
+                done();
+              });
             });
           });
         });
@@ -61,16 +63,18 @@ describe('Private API Router', function () {
     };
 
     before(function (done) {
-      request(requestData, function (err, response) {
-        if(err){
-          console.log('Test Error ' + err);
-        }
-        if(response.statusCode == 201){
-          status = true;
-        }
-        connecter.getStatusData(function (data) {
-          value = data;
-          done();
+      connecter.setNewData('STATUS', function () {
+        request(requestData, function (err, response) {
+          if(err){
+            console.log('Test Error ' + err);
+          }
+          if(response.statusCode == 201){
+            status = true;
+          }
+          connecter.getStatusData(function (data) {
+            value = data;
+            done();
+          });
         });
       });
     });
