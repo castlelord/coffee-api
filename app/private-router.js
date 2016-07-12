@@ -50,10 +50,7 @@ router.post('/status', function (req, res) {
   if(req.body.beans != undefined && req.body.water != undefined){
     connecter.setStatusData(req.body.beans, req.body.water, function () {
       res.sendStatus(201);
-      connecter.getNewData(function (err, reply) {
-        if(err){
-          console.log('Error ' + err);
-        }
+      connecter.getNewData(function (reply) {
         switch (reply) {
           case 'STATUS':
             connecter.setNewData('NONE', function () {
@@ -67,7 +64,7 @@ router.post('/status', function (req, res) {
             });
             break;
           default:
-          console.log('Error: Wrong new-data');            
+          console.log('Error: Wrong new-data');
         }
       });
     });
